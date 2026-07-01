@@ -1,0 +1,90 @@
+{% extends 'admin/hfcadminbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+
+      <h5 class="card-title fw-semibold mb-4">Edit News or Announcement</h5>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" name="title" value="{{ news.title }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="content" class="form-label">Content</label>
+          <textarea class="form-control" id="content" name="content" rows="6" required>{{ news.content }}</textarea>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {% if news.is_published %}checked{% endif %}>
+          <label class="form-check-label" for="is_published">Publish</label>
+        </div>
+
+        <div class="mb-3">
+          <label for="attachment" class="form-label">Attachment <span class="text-muted">(optional)</span></label>
+          {% if news.attachment %}
+            <div class="mb-1"><a href="{{ news.attachment.url }}" target="_blank" class="text-success"><i class="fas fa-paperclip me-1"></i>Current Attachment</a></div>
+          {% endif %}
+          <input type="file" class="form-control" id="attachment" name="attachment" onchange="handleAttachmentChange(this)">
+          <div class="form-text text-muted mt-1">
+            <i class="fas fa-info-circle me-1"></i>
+            Maximum file size: <strong>2 MB</strong>. For larger files, use the link field below instead.
+            <br>You cannot upload both an attachment and a link at the same time.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="link" class="form-label">Link <span class="text-muted">(optional — use for files larger than 2 MB)</span></label>
+          <input type="url" class="form-control" id="link" name="link"
+            placeholder="https://example.com/document.pdf"
+            value="{% if news.link %}{{ news.link }}{% endif %}"
+            onchange="handleLinkChange(this)">
+          <div class="form-text text-muted mt-1">
+            <i class="fas fa-info-circle me-1"></i>
+            Provide a link if the file exceeds 2 MB. Only one of attachment or link is allowed.
+            Saving a new link will clear the existing attachment, and vice versa.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Announcement</button>
+        <a href="{% url 'news_announcements_detail' news.pk %}" class="btn btn-secondary">Cancel</a>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function handleAttachmentChange(input) {
+    const linkInput = document.getElementById('link');
+    if (input.files.length > 0) {
+      linkInput.value = '';
+      linkInput.disabled = true;
+    } else {
+      linkInput.disabled = false;
+    }
+  }
+
+  function handleLinkChange(input) {
+    const attachmentInput = document.getElementById('attachment');
+    if (input.value.trim() !== '') {
+      attachmentInput.value = '';
+      attachmentInput.disabled = true;
+    } else {
+      attachmentInput.disabled = false;
+    }
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+
+/** ADD YOUR AWESOME CODES HERE **/
+
+/* ── Preloader ── */
+#preloader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.preloader-content {
+    text-align: center;
+    animation: preloader-pulse 1.4s ease-in-out infinite;
+}
+
+.preloader-logo {
+    width: 110px;
+    height: auto;
+    display: block;
+    margin: 0 auto 14px;
+}
+
+.preloader-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #eea412;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+@keyframes preloader-pulse {
+    0%, 100% { opacity: 1;   transform: scale(1);    }
+    50%       { opacity: 0.6; transform: scale(0.96); }
+}
