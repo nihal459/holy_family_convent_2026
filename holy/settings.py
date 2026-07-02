@@ -24,12 +24,31 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0c_t0p^=c#nxr$w(j@9oh9eycbr(a^b72fa@m)z(^gsr^vcbx('
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'django-insecure-0c_t0p^=c#nxr$w(j@9oh9eycbr(a^b72fa@m)z(^gsr^vcbx('
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["www.holyfamilyconventschoolnagriparole.in", "holyfamilyconventschoolnagriparole.in", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "www.holyfamilyconventschoolnagriparole.in",
+    "holyfamilyconventschoolnagriparole.in",
+    "localhost",
+    "127.0.0.1",
+    ".vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.holyfamilyconventschoolnagriparole.in",
+    "https://holyfamilyconventschoolnagriparole.in",
+    "https://*.vercel.app",
+]
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -129,6 +148,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -146,6 +167,10 @@ STORAGES = {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
+
+# django-cloudinary-storage's collectstatic override still reads this
+# legacy setting directly; Django 5.1+ no longer derives it from STORAGES.
+STATICFILES_STORAGE = STORAGES['staticfiles']['BACKEND']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
