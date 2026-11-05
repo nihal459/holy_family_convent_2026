@@ -3,106 +3,669 @@
 {% load static %}
 
 <style>
-    /* ── Hero Banner ── */
-    #carouselExampleControls {
+    :root {
+        --navy: #4c5a7d;
+        --navy-deep: #2c3550;
+        --orange: #eea412;
+        --orange-ink: #8a5a00;
+        --orange-soft: rgba(238, 164, 18, 0.14);
+        --cream: #fbf8f1;
+        --ink: #1f2637;
+        --muted: #5f6779;
+    }
+
+    /* style.css pins html/body to 100%, which would end the sticky header after one screen */
+    html, body {
+        height: auto;
+    }
+
+    /* ── Header (home page only) ── */
+    .top-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        box-shadow: 0 4px 22px rgba(31, 38, 55, 0.22);
+    }
+    .top-navbar .navbar-light .navbar-nav .nav-item {
+        margin: 0 14px;
+    }
+    .top-navbar .navbar-light .navbar-nav .nav-item .nav-link {
+        letter-spacing: 0.03em;
+    }
+    .top-navbar .navbar-light .navbar-nav .nav-item .nav-link:hover {
+        color: var(--orange);
+    }
+    .top-navbar .navbar-toggler {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    }
+    .top-navbar .navbar-toggler .icon-bar {
+        background: #fff;
+    }
+
+    /* ── Shared pieces ── */
+    .home-section {
+        padding: 96px 0;
+    }
+    .home-section.cream {
+        background: var(--cream);
+    }
+    .home-head {
+        max-width: 720px;
+        margin: 0 auto 52px;
+        text-align: center;
+    }
+    .eyebrow {
+        display: block;
+        margin-bottom: 12px;
+        padding: 0;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--orange-ink);
+    }
+    .home-title {
+        margin: 0 0 16px;
+        padding: 0;
+        font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+        font-weight: 700;
+        line-height: 1.18;
+        color: var(--ink);
+        text-wrap: balance;
+    }
+    .home-lead {
+        margin: 0;
+        font-size: 17px;
+        line-height: 1.7;
+        color: var(--muted);
+    }
+    .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 28px;
+        border: 2px solid var(--orange);
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #222;
+        background: var(--orange);
+        transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    .btn-pill:hover,
+    .btn-pill:focus {
+        color: #222;
+        background: #f6b93b;
+        border-color: #f6b93b;
+        text-decoration: none;
+        transform: translateY(-2px);
+    }
+    .btn-pill.ghost {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.75);
+    }
+    .btn-pill.ghost:hover,
+    .btn-pill.ghost:focus {
+        color: var(--navy-deep);
+        background: #fff;
+        border-color: #fff;
+    }
+
+    /* Scroll reveal; the class is only added by JS, so content stays visible without it */
+    .reveal-on .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-on .reveal.in {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* ── Hero ── */
+    #carouselExampleControls {
+        background: var(--navy-deep);
     }
     #carouselExampleControls .carousel-inner,
     #carouselExampleControls .carousel-item,
     #carouselExampleControls .first-section {
-        height: 576px;
+        height: clamp(480px, 46.875vw, 760px);
     }
     #carouselExampleControls .first-section {
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 116px;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }
-    /* Lighter overlay so background shows through more */
     #carouselExampleControls .first-section::before {
-        background: rgba(0, 0, 0, 0.3) !important;
+        background:
+            linear-gradient(90deg, rgba(23, 29, 48, 0.82), rgba(23, 29, 48, 0.4) 55%, rgba(23, 29, 48, 0.08)),
+            linear-gradient(0deg, rgba(23, 29, 48, 0.8), rgba(23, 29, 48, 0) 60%);
     }
-    /* Bold, shadowed text for readability */
+    #carouselExampleControls .big-tagline {
+        position: relative;
+        z-index: 1;
+        max-width: 780px;
+        text-align: left;
+    }
+    #carouselExampleControls .hero-kicker {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 6px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+    }
     #carouselExampleControls .first-section h2 {
-        font-weight: 700 !important;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        margin: 0 0 16px;
+        padding: 0;
+        font-size: clamp(2.1rem, 3.7vw, 3.15rem);
+        font-weight: 700;
+        line-height: 1.08;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
     }
     #carouselExampleControls .first-section .lead {
-        font-weight: 500 !important;
-        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+        padding: 0 0 28px;
+        font-size: clamp(1.02rem, 1.7vw, 1.3rem);
+        font-weight: 400;
+        line-height: 1.55;
+    }
+    #carouselExampleControls .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    /* style.css strips the background and recolours every hero link, so restate the buttons here */
+    #carouselExampleControls .big-tagline a.btn-pill {
+        font-size: 15px;
+        color: #222;
+        background: var(--orange);
+    }
+    #carouselExampleControls .big-tagline a.btn-pill:hover,
+    #carouselExampleControls .big-tagline a.btn-pill:focus {
+        background: #f6b93b;
+    }
+    #carouselExampleControls .big-tagline a.btn-pill.ghost {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+    }
+    #carouselExampleControls .big-tagline a.btn-pill.ghost:hover,
+    #carouselExampleControls .big-tagline a.btn-pill.ghost:focus {
+        color: var(--navy-deep);
+        background: #fff;
+    }
+    /* Text rises in each time a slide becomes active */
+    #carouselExampleControls .big-tagline > * {
+        opacity: 0;
+    }
+    #carouselExampleControls .carousel-item.active .big-tagline > * {
+        animation: heroFadeUp 0.4s ease-out both;
+    }
+    #carouselExampleControls .carousel-item.active .big-tagline > :nth-child(2) {
+        animation-delay: 0.04s;
+    }
+    #carouselExampleControls .carousel-item.active .big-tagline > :nth-child(3) {
+        animation-delay: 0.08s;
+    }
+    #carouselExampleControls .carousel-item.active .big-tagline > :nth-child(4) {
+        animation-delay: 0.12s;
+    }
+    @keyframes heroFadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: none; }
+    }
+    /* Arrows and indicators sit together, bottom right, clear of the text */
+    #carouselExampleControls .carousel-control-prev,
+    #carouselExampleControls .carousel-control-next {
+        top: auto;
+        bottom: 100px;
+        left: auto;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        font-size: 20px;
+        line-height: 1;
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.16);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        transition: background 0.25s ease;
+    }
+    #carouselExampleControls .carousel-control-prev {
+        right: 86px;
+    }
+    #carouselExampleControls .carousel-control-next {
+        right: 30px;
+    }
+    #carouselExampleControls .carousel-control-prev:hover,
+    #carouselExampleControls .carousel-control-next:hover,
+    #carouselExampleControls .carousel-control-prev:focus-visible,
+    #carouselExampleControls .carousel-control-next:focus-visible {
+        background: var(--orange);
+    }
+    #carouselExampleControls .carousel-indicators {
+        right: 146px;
+        bottom: 118px;
+        left: auto;
+        justify-content: flex-end;
+        margin: 0;
+    }
+    #carouselExampleControls .carousel-indicators li,
+    #adCarousel .carousel-indicators li {
+        width: 9px;
+        height: 9px;
+        margin: 0 4px;
+        border: 0;
+        border-radius: 999px;
+        background: #fff;
+        opacity: 0.6;
+        transition: width 0.25s ease, background 0.25s ease;
+    }
+    #carouselExampleControls .carousel-indicators li.active,
+    #adCarousel .carousel-indicators li.active {
+        width: 26px;
+        background: var(--orange);
+        opacity: 1;
     }
 
-    /* ── Cards ── */
-    .card-hover {
-        transition: transform 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* ── Quick links, overlapping the hero ── */
+    .quick-links {
+        position: relative;
+        z-index: 5;
+        margin-top: -68px;
     }
-    .card-hover:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    .quick-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+    .quick-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 24px 22px;
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 16px 40px rgba(31, 38, 55, 0.13);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .quick-card:hover,
+    .quick-card:focus {
+        text-decoration: none;
+        transform: translateY(-5px);
+        box-shadow: 0 22px 48px rgba(31, 38, 55, 0.18);
+    }
+    .icon-tile {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 19px;
+        color: var(--orange-ink);
+        background: var(--orange-soft);
+    }
+    .quick-card strong {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--ink);
+    }
+    .quick-card small {
+        display: block;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--muted);
+    }
+
+    /* ── News and advertisement ── */
+    .news-section {
+        padding: 72px 0 96px;
+    }
+    .home-card {
+        display: flex;
+        flex-direction: column;
+        height: 380px;
+        padding: 1.75rem;
+        border: 1px solid rgba(31, 38, 55, 0.07);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 10px 32px rgba(31, 38, 55, 0.07);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .home-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(31, 38, 55, 0.12);
     }
     .news-title {
-        text-decoration: underline;
-        margin-bottom: 0.6rem;
-        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 1rem;
+        padding: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--ink);
         flex-shrink: 0;
     }
+    .news-title .icon-tile {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 16px;
+    }
     .announcement-list {
-        list-style-type: disc;
-        padding-left: 16px;
-        font-size: 11px;
+        list-style: none;
+        padding: 0 6px 0 0;
+        font-size: 14.5px;
         line-height: 1.4;
-        overflow: hidden;
+        overflow-y: auto;
+        scrollbar-width: thin;
         flex: 1;
+        min-height: 0;
         margin-bottom: 0;
     }
     .announcement-list li {
-        margin-bottom: 3px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 11px 0;
+        border-bottom: 1px solid rgba(31, 38, 55, 0.07);
+    }
+    .announcement-list li:last-child {
+        border-bottom: 0;
     }
     .announcement-list li a {
-        color: #333;
-        text-decoration: none;
-        font-weight: 600;
+        color: var(--ink);
+        font-weight: 500;
+        transition: color 0.2s ease;
     }
     .announcement-list li a:hover {
-        color: #007bff;
+        color: var(--orange-ink);
+        text-decoration: none;
+    }
+    .news-date {
+        flex-shrink: 0;
+        font-size: 12px;
+        white-space: nowrap;
+        color: var(--muted);
+    }
+    .view-more-btn {
+        display: inline-block;
+        padding: 8px 24px;
+        border-radius: 999px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--orange-ink);
+        background: var(--orange-soft);
+        transition: background 0.25s ease, color 0.25s ease;
+    }
+    .view-more-btn:hover,
+    .view-more-btn:focus {
+        color: #222;
+        background: var(--orange);
+        text-decoration: none;
     }
     /* Ad carousel fills remaining card height */
-    .ad-card-body {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
     #adCarousel {
         flex: 1;
         min-height: 0;
+        border-radius: 14px;
+        overflow: hidden;
     }
     #adCarousel .carousel-inner,
     #adCarousel .carousel-item {
         height: 100%;
     }
-
-    /* ── Ad image fills the carousel box ── */
     .ad-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
         display: block;
+        cursor: zoom-in;
     }
 
-    /* ── Orange button ── */
-    .hover-btn-new.orange {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #f28c38;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background 0.3s;
+    /* ── About ── */
+    .about-row + .about-row {
+        margin-top: 88px;
     }
-    .hover-btn-new.orange:hover {
-        background: #e07b30;
+    .about-copy p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--muted);
+    }
+    .about-copy .btn-pill {
+        margin-top: 10px;
+    }
+    .about-figure {
+        position: relative;
+        isolation: isolate;
+        margin: 0;
+    }
+    .about-figure::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 22px;
+        right: -18px;
+        bottom: -18px;
+        left: 22px;
+        border-radius: 24px;
+        background: var(--orange-soft);
+    }
+    .about-figure.flip::before {
+        right: 22px;
+        left: -18px;
+    }
+    .about-figure img {
+        display: block;
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        border-radius: 22px;
+        box-shadow: 0 20px 48px rgba(31, 38, 55, 0.16);
+    }
+    .principal-card {
+        padding: 40px;
+        border-radius: 22px;
+        background: var(--cream);
+    }
+    .principal-card > i {
+        display: block;
+        margin-bottom: 16px;
+        font-size: 30px;
+        color: var(--orange);
+    }
+
+    /* ── Campus life ── */
+    .campus-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+    }
+    .campus-card {
+        height: 100%;
+        padding: 30px 26px;
+        border: 1px solid rgba(31, 38, 55, 0.06);
+        border-radius: 20px;
+        background: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .campus-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 40px rgba(31, 38, 55, 0.1);
+    }
+    .campus-card h3 {
+        margin: 18px 0 10px;
+        padding: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--ink);
+    }
+    .campus-card p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--muted);
+    }
+
+    /* ── Stats ── */
+    .stats-band {
+        padding: 72px 0;
+        color: #fff;
+        background:
+            radial-gradient(circle at 12% 20%, rgba(238, 164, 18, 0.18), transparent 42%),
+            linear-gradient(120deg, var(--navy-deep), var(--navy));
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        text-align: center;
+    }
+    .stats-grid > div + div {
+        border-left: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .stats-grid i {
+        display: block;
+        font-size: 34px;
+        line-height: 1;
+        color: var(--orange);
+    }
+    .stats-grid i::before {
+        margin: 0;
+        font-size: 34px;
+    }
+    .stat-number {
+        display: block;
+        margin: 14px 0 2px;
+        font-size: clamp(2.6rem, 5vw, 3.75rem);
+        font-weight: 700;
+        line-height: 1.1;
+    }
+    .stats-grid h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    /* ── Gallery: tiles grow to fill their row, so any item count lays out cleanly ── */
+    .gallery-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .gallery-tile {
+        position: relative;
+        flex: 1 1 30%;
+        height: 270px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: var(--cream);
+    }
+    .gallery-tile img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    .gallery-tile:hover img,
+    .gallery-tile:focus img {
+        transform: scale(1.06);
+    }
+    .gallery-tile span {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 36px 18px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+        background: linear-gradient(0deg, rgba(23, 29, 48, 0.78), rgba(23, 29, 48, 0));
+    }
+
+    /* ── Closing call to action ── */
+    .cta-section {
+        padding: 0 0 96px;
+    }
+    .cta-card {
+        padding: 76px 40px;
+        border-radius: 28px;
+        text-align: center;
+        color: #fff;
+        background-size: cover;
+        background-position: center;
+    }
+    .cta-card h2 {
+        margin: 0 0 12px;
+        padding: 0;
+        font-size: clamp(1.9rem, 4vw, 3rem);
+        font-weight: 700;
+        line-height: 1.18;
+        color: #fff;
+    }
+    .cta-card p {
+        margin: 0 0 28px;
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    .cta-card .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    /* ── Footer (home page only) ── */
+    .footer {
+        padding: 72px 0 40px !important;
+        background: var(--navy-deep);
+    }
+    .footer .widget-title h3 {
+        margin-bottom: 8px;
+        font-size: 21px;
+    }
+    .footer, .footer p, .footer-links li, .footer-links a {
+        color: rgba(255, 255, 255, 0.78);
+    }
+    .footer-links a:hover, .footer a:hover {
+        color: var(--orange);
+    }
+    .footer-links-soi li a {
+        width: 40px;
+        height: 40px;
+        margin-right: 6px;
+        border-radius: 50%;
+        font-size: 16px;
+        line-height: 40px;
+    }
+    .copyrights {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: #232b43;
+    }
+    .footer-distributed .footer-company-name,
+    .footer-distributed .footer-company-name a {
+        color: rgba(255, 255, 255, 0.65);
     }
 
     /* ── Modals ── */
@@ -131,32 +694,131 @@
     }
 
     /* ── Responsive ── */
-    @media (max-width: 991px) {
-        #carouselExampleControls .carousel-inner,
-        #carouselExampleControls .carousel-item,
-        #carouselExampleControls .first-section {
-            height: 432px;
+    @media (min-width: 992px) {
+        .home-card {
+            height: 440px;
         }
-        .card-hover {
-            min-height: auto !important;
-            max-height: none !important;
+    }
+    @media (max-width: 1199px) {
+        .top-navbar .navbar-brand b {
+            font-size: 1.05rem;
+        }
+        .top-navbar .navbar-light .navbar-nav .nav-item {
+            margin: 0 7px;
+        }
+        .top-navbar .navbar-light .navbar-nav .nav-item .nav-link {
+            font-size: 13px !important; /* beats the inline 14px in base.html */
+            white-space: nowrap;
+        }
+        .campus-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .quick-card {
+            padding: 20px 16px;
+            gap: 12px;
+        }
+    }
+    @media (max-width: 991px) {
+        .home-section {
+            padding: 72px 0;
+        }
+        .news-section {
+            padding: 56px 0 56px;
+        }
+        .quick-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .about-row + .about-row {
+            margin-top: 64px;
+        }
+        .about-figure {
+            margin-bottom: 44px;
+        }
+        .about-figure img {
+            height: 340px;
+        }
+        #carouselExampleControls .big-tagline {
+            max-width: 560px;
+        }
+        #carouselExampleControls .first-section {
+            padding-bottom: 96px;
+        }
+        #carouselExampleControls .carousel-control-prev,
+        #carouselExampleControls .carousel-control-next {
+            bottom: 86px;
+        }
+        #carouselExampleControls .carousel-indicators {
+            bottom: 104px;
         }
     }
     @media (max-width: 767px) {
-        #carouselExampleControls .carousel-inner,
-        #carouselExampleControls .carousel-item,
+        /* Swipe and indicators replace the arrows on phones */
+        #carouselExampleControls .carousel-control-prev,
+        #carouselExampleControls .carousel-control-next {
+            display: none;
+        }
+        #carouselExampleControls .carousel-indicators {
+            right: 0;
+            bottom: 62px;
+            left: 0;
+            justify-content: center;
+        }
         #carouselExampleControls .first-section {
-            height: 312px;
+            padding-bottom: 88px;
         }
-        .card-hover {
-            min-height: auto !important;
-            max-height: none !important;
+        #carouselExampleControls .hero-kicker {
+            font-size: 11.5px;
+            padding: 5px 12px;
         }
-        /* Smaller Contact Us button on mobile */
-        #carouselExampleControls .big-tagline a.hover-btn-new {
-            font-size: 12px !important;
-            line-height: 30px !important;
-            padding: 0 12px !important;
+        .quick-links {
+            margin-top: -44px;
+        }
+        .quick-grid {
+            gap: 12px;
+        }
+        .quick-card {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 18px 16px;
+        }
+        .principal-card {
+            padding: 28px 24px;
+        }
+        .about-figure::before {
+            right: -10px;
+            bottom: -10px;
+        }
+        .about-figure.flip::before {
+            right: 22px;
+            left: -10px;
+        }
+        .about-figure img {
+            height: 260px;
+        }
+        .campus-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+        .stats-grid > div + div {
+            border-left: 0;
+        }
+        .gallery-grid {
+            gap: 10px;
+        }
+        .gallery-tile {
+            flex-basis: 45%;
+            height: 170px;
+        }
+        .cta-section {
+            padding-bottom: 64px;
+        }
+        .cta-card {
+            padding: 52px 22px;
+            border-radius: 22px;
         }
         .modal-dialog {
             display: flex;
@@ -164,42 +826,25 @@
             min-height: calc(100vh - 60px);
             margin: 0 auto;
         }
-        #imageModal .modal-dialog {
-            display: flex;
-            align-items: center;
-            min-height: calc(100vh - 60px);
-            margin: 0 auto;
-        }
-        #gallery .section-title { margin-bottom: 5px; }
-        #gallery #galleryCarousel { margin-bottom: 5px; }
-        #gallery .text-center.mt-4 { margin-top: 5px; }
     }
-    @media (max-width: 480px) {
-        #carouselExampleControls .carousel-inner,
-        #carouselExampleControls .carousel-item,
-        #carouselExampleControls .first-section {
-            height: 240px;
+    @media (prefers-reduced-motion: reduce) {
+        #carouselExampleControls .big-tagline > * {
+            opacity: 1;
         }
-        #carouselExampleControls .first-section h2 {
-            font-size: 18px !important;
-            padding-bottom: 8px;
-            margin-bottom: 10px !important;
+        #carouselExampleControls .carousel-item.active .big-tagline > * {
+            animation: none;
         }
-        #carouselExampleControls .first-section .lead {
-            font-size: 11px !important;
-            padding-bottom: 10px;
-        }
-        /* Even smaller button on very small screens */
-        #carouselExampleControls .big-tagline a.hover-btn-new {
-            font-size: 11px !important;
-            line-height: 26px !important;
-            padding: 0 10px !important;
+        .home-card:hover,
+        .quick-card:hover,
+        .campus-card:hover,
+        .btn-pill:hover,
+        .gallery-tile:hover img {
+            transform: none;
         }
     }
 </style>
 
-<div class="container mt-4">
-<div id="carouselExampleControls" class="carousel slide bs-slider box-slider" data-ride="carousel" data-pause="hover" data-interval="false">
+<div id="carouselExampleControls" class="carousel slide carousel-fade bs-slider box-slider" data-ride="carousel" data-pause="hover" data-interval="2000">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
@@ -209,80 +854,116 @@
     <div class="carousel-inner" role="listbox">
         <div class="carousel-item active">
             <div id="home" class="first-section" style="background-image:url('{% static 'images/school/bannermain.png' %}');">
-                <div class="dtab">
-                    <div class="text-center px-3">
-                        <div class="big-tagline">
-                            <h2 style="margin-bottom:40px;"><strong>Holy Family Convent</strong> School</h2>
-                            <p class="lead">Educating the mind without educating the heart is no education at all</p>
-                            <a href="{% url 'view_contact' %}" class="hover-btn-new"><span>Contact Us</span></a>
+                <div class="container">
+                    <div class="big-tagline">
+                        <span class="hero-kicker">Diocese of Jammu-Srinagar Education Society</span>
+                        <h2><strong>Holy Family Convent</strong> School</h2>
+                        <p class="lead">Educating the mind without educating the heart is no education at all</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'admission' %}" class="btn-pill">Admission <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                            <a href="{% url 'view_contact' %}" class="btn-pill ghost">Contact Us</a>
                         </div>
                     </div>
                 </div>
             </div><!-- end section -->
         </div>
         <div class="carousel-item">
-            <div id="home" class="first-section" style="background-image:url('{% static 'images/school/banner3.jpeg' %}');">
-                <div class="dtab">
-                    <div class="text-center px-3">
-                        <div class="big-tagline">
-                            <h2 data-animation="animated zoomInRight" style="margin-bottom:40px;">Holy Family Convent <strong> School</strong></h2>
-                            <p class="lead" data-animation="animated fadeInLeft">Learning today, leading tomorrow</p>
-                            <a href="{% url 'view_contact' %}" class="hover-btn-new"><span>Contact Us</span></a>
+            <div class="first-section" style="background-image:url('{% static 'images/school/banner3.jpeg' %}');">
+                <div class="container">
+                    <div class="big-tagline">
+                        <span class="hero-kicker">Mirpur Ram, Nagri Parole, District Kathua</span>
+                        <h2>Holy Family Convent <strong>School</strong></h2>
+                        <p class="lead">Learning today, leading tomorrow</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'admission' %}" class="btn-pill">Admission <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                            <a href="{% url 'view_contact' %}" class="btn-pill ghost">Contact Us</a>
                         </div>
                     </div>
                 </div>
             </div><!-- end section -->
         </div>
         <div class="carousel-item">
-            <div id="home" class="first-section" style="background-image:url('{% static 'images/school/bb.jpeg' %}');">
-                <div class="dtab">
-                    <div class="text-center px-3">
-                        <div class="big-tagline">
-                            <h2 data-animation="animated zoomInRight" style="margin-bottom:40px;"><strong>Holy Family Convent</strong> School</h2>
-                            <p class="lead" data-animation="animated fadeInLeft">With God's grace, every child can shine</p>
-                            <a href="{% url 'view_contact' %}" class="hover-btn-new"><span>Contact Us</span></a>
+            <div class="first-section" style="background-image:url('{% static 'images/school/bb.jpeg' %}');">
+                <div class="container">
+                    <div class="big-tagline">
+                        <span class="hero-kicker">Academics, sports, arts and co-curricular activities</span>
+                        <h2><strong>Holy Family Convent</strong> School</h2>
+                        <p class="lead">With God's grace, every child can shine</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'admission' %}" class="btn-pill">Admission <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                            <a href="{% url 'view_contact' %}" class="btn-pill ghost">Contact Us</a>
                         </div>
                     </div>
                 </div>
             </div><!-- end section -->
         </div>
         <!-- Left Control -->
-        <a class="new-effect carousel-control-prev main-carousel" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="fa fa-angle-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
         <!-- Right Control -->
-        <a class="new-effect carousel-control-next main-carousel" href="#carouselExampleControls" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
             <span class="fa fa-angle-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
     </div>
 </div>
-</div><!-- end banner container -->
 
-<div class="container my-5">
+<div class="quick-links">
+    <div class="container">
+        <div class="quick-grid">
+            <a href="{% url 'admission' %}" class="quick-card">
+                <span class="icon-tile"><i class="fa fa-user-graduate" aria-hidden="true"></i></span>
+                <span><strong>Admission</strong><small>How to apply and enrol</small></span>
+            </a>
+            <a href="{% url 'academics' %}" class="quick-card">
+                <span class="icon-tile"><i class="fa fa-book-open" aria-hidden="true"></i></span>
+                <span><strong>Academics</strong><small>Curriculum and calendar</small></span>
+            </a>
+            <a href="{% url 'view_gallery' %}" class="quick-card">
+                <span class="icon-tile"><i class="fa fa-images" aria-hidden="true"></i></span>
+                <span><strong>Gallery</strong><small>School life in pictures</small></span>
+            </a>
+            <a href="{% url 'view_contact' %}" class="quick-card">
+                <span class="icon-tile"><i class="fa fa-phone-alt" aria-hidden="true"></i></span>
+                <span><strong>Contact</strong><small>Reach the school office</small></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="news-section">
+    <div class="container">
     <div class="row">
         <!-- News and Announcements Section -->
-        <div class="col-lg-6 col-md-12 mb-4">
-            <div class="card card-hover p-3 d-flex flex-column" style="height:380px;">
-                <h3 class="news-title">News and Announcements</h3>
+        <div class="col-lg-6 col-md-12 mb-4 reveal">
+            <div class="home-card">
+                <h3 class="news-title"><span class="icon-tile"><i class="fa fa-bullhorn" aria-hidden="true"></i></span>News and Announcements</h3>
                 <ul class="announcement-list">
                     {% for news in latest_news %}
                     <li>
-                        <a href="">{{ news.title }}</a>
+                        {% if news.attachment %}
+                        <a href="{{ news.attachment.url }}" target="_blank" rel="noopener">{{ news.title }}</a>
+                        {% elif news.link %}
+                        <a href="{{ news.link }}" target="_blank" rel="noopener">{{ news.title }}</a>
+                        {% else %}
+                        <a href="{% url 'view_announcements' %}">{{ news.title }}</a>
+                        {% endif %}
+                        <span class="news-date">{{ news.published_date|date:"d M Y" }}</span>
                     </li>
                     {% endfor %}
                 </ul>
-                <div class="text-center mt-2 flex-shrink-0">
-                    <a href="{% url 'view_announcements' %}" class="btn btn-primary btn-sm">View More</a>
+                <div class="text-center mt-3 flex-shrink-0">
+                    <a href="{% url 'view_announcements' %}" class="view-more-btn">View More</a>
                 </div>
             </div>
         </div>
 
         <!-- Advertisement Section with Carousel -->
-        <div class="col-lg-6 col-md-12 mb-4">
-            <div class="card card-hover p-3 d-flex flex-column" style="height:380px;">
-                <h3 class="news-title">Advertisement</h3>
+        <div class="col-lg-6 col-md-12 mb-4 reveal">
+            <div class="home-card">
+                <h3 class="news-title"><span class="icon-tile"><i class="fa fa-images" aria-hidden="true"></i></span>Advertisement</h3>
                 {% if banner %}
                 <div id="adCarousel" class="carousel slide" data-ride="carousel" data-interval="2500">
                     <!-- Indicators -->
@@ -372,6 +1053,7 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 
 <!-- JavaScript for dynamic ad modal carousel -->
@@ -385,241 +1067,195 @@
     });
 </script>
 
-<div id="overviews" class="section wb" style="margin-top:-40px;">
+<div id="overviews" class="home-section" style="padding-top:0;">
     <div class="container">
-        <div class="section-title row text-center">
-            <div class="col-md-8 offset-md-2">
-                <h3>About Holy Family Convent School</h3>
-                <p class="lead">Located at Mirpur Ram, Nagri Parole, Near Tehsildar Office, District Kathua, 184151, our school blends Christian values with the cultural richness of Jammu to nurture young minds in a serene educational environment.</p>
-            </div>
+        <div class="home-head reveal">
+            <span class="eyebrow">About the school</span>
+            <h3 class="home-title">About Holy Family Convent School</h3>
+            <p class="home-lead">Located at Mirpur Ram, Nagri Parole, Near Tehsildar Office, District Kathua, 184151, our school blends Christian values with the cultural richness of Jammu to nurture young minds in a serene educational environment.</p>
         </div><!-- end title -->
-    
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="message-box">
-                    <h4>A Commitment to Excellence</h4>
-                    <h2>Welcome to Holy Family Convent School</h2>
+
+        <div class="row align-items-center about-row">
+            <div class="col-lg-6 col-md-12 reveal">
+                <div class="about-copy pr-lg-4">
+                    <h4 class="eyebrow">A Commitment to Excellence</h4>
+                    <h2 class="home-title">Welcome to Holy Family Convent School</h2>
                     <p>Established by the Diocese of Jammu-Srinagar Education Society, we are dedicated to providing a nurturing environment that fosters academic excellence, creativity, and personal growth. Our dedicated team of teachers and staff work tirelessly to empower students to become confident, compassionate, and responsible individuals.</p>
                     <p>Our mission is to inspire a love for learning, promote critical thinking, and develop essential life skills through a well-rounded education encompassing academics, sports, arts, and co-curricular activities.</p>
-                    <a href="{% url 'aboutus' %}" class="hover-btn-new orange"><span>Learn More</span></a>
-                </div><!-- end messagebox -->
+                    <a href="{% url 'aboutus' %}" class="btn-pill">Learn More <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
             </div><!-- end col -->
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="post-media wow fadeIn">
-                    <img src="{% static 'images/school/abt1.png' %}" alt="Holy Family Convent School Campus" class="img-fluid img-rounded">
-                </div><!-- end media -->
+            <div class="col-lg-6 col-md-12 mt-5 mt-lg-0 reveal">
+                <figure class="about-figure">
+                    <img src="{% static 'images/school/abt1.png' %}" alt="Holy Family Convent School Campus" loading="lazy">
+                </figure>
             </div><!-- end col -->
         </div>
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="post-media wow fadeIn">
-                    <img src="{% static 'images/school/abt3.jpg' %}" alt="Students at Holy Family Convent School" class="img-fluid img-rounded">
-                </div><!-- end media -->
+        <div class="row align-items-center about-row">
+            <div class="col-lg-6 col-md-12 reveal">
+                <figure class="about-figure flip">
+                    <img src="{% static 'images/school/abt3.jpg' %}" alt="Students at Holy Family Convent School" loading="lazy">
+                </figure>
             </div><!-- end col -->
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="message-box">
-                    <h2>A Message from Our Principal</h2>
+            <div class="col-lg-6 col-md-12 reveal">
+                <div class="about-copy principal-card">
+                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+                    <h2 class="home-title">A Message from Our Principal</h2>
                     <p>Dear parents and students, welcome to our school's website! As Principal, I am delighted to share our vision, mission, and values. We remain committed to our core values of integrity, respect, and inclusivity, creating a safe, supportive environment where every student can thrive and reach their full potential. - Fr. Bijo Matthew</p>
                     <p>We aim to develop capable, curious, and creative thinkers equipped to face the challenges of an ever-changing world, guided by Christian principles.</p>
-                    <a href="{% url 'aboutus' %}" class="hover-btn-new orange"><span>Learn More</span></a>
-                </div><!-- end messagebox -->
+                    <a href="{% url 'aboutus' %}" class="btn-pill">Learn More <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
             </div><!-- end col -->
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end section -->
 
-<section class="section lb page-section">
+<section class="home-section cream">
     <div class="container">
-
-        <div class="timeline">
-            <div class="timeline__wrap">
-                <div class="timeline__items">
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Laughter echoes, swings sway, and memories are made in our Children's Park.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-02" style="background: url('{% static 'images/img-02.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Where innocence meets joy, and childhood magic unfolds, our park is a haven for young souls.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-03" style="background: url('{% static 'images/img-03.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>The well-furnished stage shines bright, a canvas for creativity and dreams.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>With every prop and every light, the stage comes alive, a world of stories to ignite.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-01" style="background: url('{% static 'images/img-01.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>The Activity Hall is where creativity meets enthusiasm, fostering a sense of community.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-02" style="background: url('{% static 'images/img-02.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>From performances to exhibitions, the Activity Hall is the heartbeat of our school.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-03" style="background: url('{% static 'images/img-03.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Our school's swimming class provides a fun and safe environment for students to learn new skills.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Through swimming, students develop physical fitness, confidence, and teamwork skills.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Our karate classes promote discipline, focus, and self-defense skills in a supportive environment.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Students learn karate techniques, build confidence, and develop physical fitness through our expert-led classes.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Our dedicated team of educators and staff are committed to providing a nurturing environment for students to thrive.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>With passionate and experienced staff, we strive to deliver exceptional education and care for our students.</p>
-                        </div>
-                    </div>
-
-                    
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Our library is a hub of knowledge, offering a vast collection of books, resources, and quiet spaces for study and research.</p>
-                        </div>
-                    </div>
-
-                    
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>Our state-of-the-art computer lab is equipped with the latest technology to enhance learning and innovation.</p>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04" style="background: url('{% static 'images/img-04.jpg' %}') no-repeat center; background-size: cover; position: relative; padding: 20px; color: #fff;">
-                            <h2></h2>
-                            <p>With modern infrastructure and cutting-edge tools, our computer lab provides an ideal environment for students to explore and develop their skills.</p>
-                        </div>
-                    </div>
-
-
+        <div class="home-head reveal">
+            <span class="eyebrow">Campus life</span>
+            <h2 class="home-title">Where every child finds a place to grow</h2>
+        </div>
+        <div class="campus-grid">
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-tree" aria-hidden="true"></i></span>
+                    <h3>Children's Park</h3>
+                    <p>Laughter echoes, swings sway, and memories are made in our Children's Park. Where innocence meets joy, and childhood magic unfolds, our park is a haven for young souls.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-theater-masks" aria-hidden="true"></i></span>
+                    <h3>The Stage</h3>
+                    <p>The well-furnished stage shines bright, a canvas for creativity and dreams. With every prop and every light, the stage comes alive, a world of stories to ignite.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-users" aria-hidden="true"></i></span>
+                    <h3>Activity Hall</h3>
+                    <p>The Activity Hall is where creativity meets enthusiasm, fostering a sense of community. From performances to exhibitions, the Activity Hall is the heartbeat of our school.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-swimmer" aria-hidden="true"></i></span>
+                    <h3>Swimming</h3>
+                    <p>Our school's swimming class provides a fun and safe environment for students to learn new skills. Through swimming, students develop physical fitness, confidence, and teamwork skills.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-fist-raised" aria-hidden="true"></i></span>
+                    <h3>Karate</h3>
+                    <p>Our karate classes promote discipline, focus, and self-defense skills in a supportive environment. Students learn karate techniques, build confidence, and develop physical fitness through our expert-led classes.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-chalkboard-teacher" aria-hidden="true"></i></span>
+                    <h3>Our Educators</h3>
+                    <p>Our dedicated team of educators and staff are committed to providing a nurturing environment for students to thrive. With passionate and experienced staff, we strive to deliver exceptional education and care for our students.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-book-reader" aria-hidden="true"></i></span>
+                    <h3>Library</h3>
+                    <p>Our library is a hub of knowledge, offering a vast collection of books, resources, and quiet spaces for study and research.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="campus-card">
+                    <span class="icon-tile"><i class="fa fa-laptop-code" aria-hidden="true"></i></span>
+                    <h3>Computer Lab</h3>
+                    <p>Our state-of-the-art computer lab is equipped with the latest technology to enhance learning and innovation. With modern infrastructure and cutting-edge tools, our computer lab provides an ideal environment for students to explore and develop their skills.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<div class="section cl">
+<div class="stats-band">
     <div class="container">
-        <div class="row text-left stat-wrap">
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-study"></i></span>
-                <p class="stat_count">5000</p>
+        <div class="stats-grid">
+            <div>
+                <i class="flaticon-study" aria-hidden="true"></i>
+                <span class="stat-number" data-count>5000</span>
                 <h3>Students</h3>
-            </div><!-- end col -->
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-online"></i></span>
-                <p class="stat_count">50</p>
-                <h3>Teachers</h3>
-            </div><!-- end col -->
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-years"></i></span>
-                <p class="stat_count">25</p>
-                <h3>Years Completed</h3>
-            </div><!-- end col -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</div><!-- end section -->
-
-<div id="gallery" class="section lb">
-    <div class="container">
-        <div class="section-title text-center">
-            <h3>Our Gallery</h3>
-            <p>Explore our collection of stunning images showcasing our work and achievements.</p>
-        </div>
-
-        <!-- Carousel -->
-        {% if gallery_items %}
-        <div id="galleryCarousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for item in gallery_items %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ item.image.url }}" class="d-block w-100 mx-auto" alt="{{ item.title }}"
-                         data-toggle="modal" data-target="#imageModal" data-img-src="{{ item.image.url }}" style="height:500px; object-fit:contain;">
-                </div>
-                {% endfor %}
             </div>
+            <div>
+                <i class="flaticon-online" aria-hidden="true"></i>
+                <span class="stat-number" data-count>50</span>
+                <h3>Teachers</h3>
+            </div>
+            <div>
+                <i class="flaticon-years" aria-hidden="true"></i>
+                <span class="stat-number" data-count>25</span>
+                <h3>Years Completed</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#galleryCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+<div id="gallery" class="home-section">
+    <div class="container">
+        <div class="home-head reveal">
+            <span class="eyebrow">School life</span>
+            <h3 class="home-title">Our Gallery</h3>
+            <p class="home-lead">Explore our collection of stunning images showcasing our work and achievements.</p>
         </div>
 
-        <div class="text-center mt-4">
-            <a href="{% url 'view_gallery' %}" class="hover-btn-new orange"><span>View More</span></a>
+        {% if gallery_items %}
+        <div class="gallery-grid reveal">
+            {% for item in gallery_items %}
+            <a href="{{ item.image.url }}" class="gallery-tile" data-toggle="modal" data-target="#imageModal">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+                <span>{{ item.title }}</span>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'view_gallery' %}" class="btn-pill">View More <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% endif %}
+    </div>
+</div>
 
-        <!-- Modal for enlarged images -->
-        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg d-flex justify-content-center align-items-center">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div id="modalCarousel" class="carousel slide" data-interval="false">
-                            <div class="carousel-inner">
-                                <!-- Modal items populated dynamically -->
-                            </div>
-                            <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                style="position:absolute;top:10px;right:15px;"></button>
+<!-- Modal for enlarged images -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg d-flex justify-content-center align-items-center">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modalCarousel" class="carousel slide" data-interval="false">
+                    <div class="carousel-inner">
+                        <!-- Modal items populated dynamically -->
                     </div>
+                    <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="container">
+        <div class="cta-card reveal" style="background-image:linear-gradient(120deg, rgba(44, 53, 80, 0.92), rgba(76, 90, 125, 0.72)), url('{% static 'images/school/bb.jpeg' %}');">
+            <h2>With God's grace, every child can shine</h2>
+            <p>Learning today, leading tomorrow</p>
+            <div class="hero-actions">
+                <a href="{% url 'admission' %}" class="btn-pill">Admission <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                <a href="{% url 'view_contact' %}" class="btn-pill ghost">Contact Us</a>
             </div>
         </div>
     </div>
@@ -628,13 +1264,14 @@
 <!-- JavaScript for dynamic modal carousel -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const galleryItems = document.querySelectorAll('#galleryCarousel .carousel-item img');
+        const galleryTiles = document.querySelectorAll('.gallery-tile');
         const modalInner = document.querySelector('#modalCarousel .carousel-inner');
 
         // Populate modal items
         modalInner.innerHTML = '';
-        galleryItems.forEach((img, index) => {
-            const src = img.getAttribute('data-img-src');
+        galleryTiles.forEach((tile, index) => {
+            const img = tile.querySelector('img');
+            const src = img.getAttribute('src');
             const alt = img.getAttribute('alt');
             const isActive = index === 0 ? 'active' : '';
             modalInner.innerHTML += `
@@ -645,8 +1282,8 @@
         });
 
         // Update active image in modal when one is clicked
-        galleryItems.forEach((img, index) => {
-            img.addEventListener('click', () => {
+        galleryTiles.forEach((tile, index) => {
+            tile.addEventListener('click', () => {
                 const items = document.querySelectorAll('#modalCarousel .carousel-item');
                 items.forEach(item => item.classList.remove('active'));
                 if (items[index]) {
@@ -655,6 +1292,43 @@
             });
         });
     });
+</script>
+
+<!-- Hero autoplay preference, scroll reveal and stat count-up -->
+<script>
+    (function () {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reduceMotion) {
+            // Must happen before window load, when Bootstrap starts data-ride carousels
+            const hero = document.getElementById('carouselExampleControls');
+            hero.removeAttribute('data-ride');
+            hero.setAttribute('data-interval', 'false');
+            return;
+        }
+        if (!('IntersectionObserver' in window)) return;
+
+        function countUp(el) {
+            const target = parseInt(el.textContent, 10);
+            const start = performance.now();
+            (function tick(now) {
+                const progress = Math.min((now - start) / 1400, 1);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+                if (progress < 1) requestAnimationFrame(tick);
+            })(start);
+        }
+
+        document.documentElement.classList.add('reveal-on');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                if (entry.target.hasAttribute('data-count')) countUp(entry.target);
+                else entry.target.classList.add('in');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal, [data-count]').forEach((el) => observer.observe(el));
+    })();
 </script>
 
 {% endblock %}

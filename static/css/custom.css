@@ -34,3 +34,9 @@
     0%, 100% { opacity: 1;   transform: scale(1);    }
     50%       { opacity: 0.6; transform: scale(0.96); }
 }
+
+
+/* ── Footer: the email and web addresses are too long for narrow columns ── */
+.footer-links a {
+    overflow-wrap: anywhere;
+}

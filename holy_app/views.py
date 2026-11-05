@@ -69,6 +69,8 @@ def view_gallery(request):
     for item in video_items:
         item.media_type = 'video'
         item.video_id = extract_video_id(item.link)
+    # A video with a missing or non-YouTube link has nothing to play
+    video_items = [item for item in video_items if item.video_id]
 
     # Merge and sort by created_at
     all_items = sorted(chain(image_items, video_items), key=attrgetter('created_at'), reverse=True)
